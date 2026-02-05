@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Portfolio | Shudhanshu Chaubey
 
-## Getting Started
+A modern, full-stack personal portfolio website built with **Next.js 14**, **TypeScript**, and **MongoDB**. It features a completely dynamic content management system, allowing the admin to update projects, read messages, and upload resumes directly from a secure dashboard.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🎨 Public Facing (Frontend)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Responsive Design**: Fully responsive UI built with Tailwind CSS.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Dynamic Resume:** "Download CV" buttons automatically fetch the latest PDF from the database.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Project Showcase:** Dynamic grid to display portfolio projects.
 
-## Learn More
+Contact Form: Functional contact form that saves messages to the database.
 
-To learn more about Next.js, take a look at the following resources:
+### 🔐 Admin Dashboard (CMS)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Secure Authentication**: Protected routes with JWT-based login system.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Resume Uploader**: Drag-and-drop file uploader to update the CV globally without code changes.
 
-## Deploy on Vercel
+**Project Management**: CRUD (Create, Read, Update, Delete) operations for portfolio projects.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Message Inbox**: View and manage inquiries received from the contact form.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Tech Stack
+
+**Framework**: Next.js 14 (App Router)
+
+**Language**: TypeScript
+
+**Styling**: Tailwind CSS
+
+**Database**: MongoDB (Mongoose)
+
+**Authentication**: JWT (JSON Web Tokens)
+
+File Handling: Custom Node.js file system implementation
+
+Toast Notifications: React Hot Toast
+
+## 🚀 Getting Started
+
+Follow these instructions to set up the project locally.
+
+1. Clone the repository
+   Bash
+   git clone https://github.com/96SHUDH/Shudhanshu-portfolio
+   cd portfolio
+2. Install dependencies
+   Bash
+   npm install
+3. Configure Environment Variables
+   Create a .env file in the root directory and add the following keys:
+
+Code snippet
+MONGO_URI=your_mongodb_connection_string
+TOKEN_SECRET=your_jwt_secret_key
+DOMAIN=http://localhost:3000 4. Create the Uploads Folder
+To enable file uploads, ensure the uploads folder exists:
