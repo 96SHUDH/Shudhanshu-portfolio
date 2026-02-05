@@ -7,7 +7,7 @@ import { error } from "console";
 
 connect();
 
-export async function POST(request: NextResponse) {
+export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
         const { email, password } = reqBody;
