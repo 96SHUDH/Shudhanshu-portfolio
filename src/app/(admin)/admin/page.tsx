@@ -1,22 +1,80 @@
-// src/app/(admin)/admin/page.tsx
-import React from 'react';
-// Notice the import path points to your admin components folder
-import ResumeUpload from '@/components/admin/ResumeUpload'; 
+"use client";
+import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+
+// 👇 IMPORT 1: The Resume Uploader
+import ResumeUpload from "@/components/admin/ResumeUpload"; 
+// 👇 IMPORT 2: The Skill Manager (You probably missed this!)
+import SkillManager from "@/components/admin/SkillManager"; 
 
 export default function AdminDashboard() {
+  const router = useRouter();
+
+  const logout = async () => {
+    try {
+      await axios.get("/api/users/logout");
+      toast.success("Logged out successfully");
+      router.push("/login");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
+    <div className="min-h-screen bg-gray-50 p-8">
+      <Toaster />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Left Card: Resume Uploader */}
-        <ResumeUpload />
-        
-        {/* Right Card: Placeholder for future stats */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-lg font-medium mb-2">Project Stats</h3>
-            <p className="text-gray-500">You can add project counts or views here later.</p>
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100 gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="text-gray-500 text-sm">Welcome back, Shudhanshu</p>
         </div>
+        
+        <div className="flex gap-4">
+          <Link href="/" className="px-4 py-2 text-sm text-gray-600 hover:text-black border border-gray-200 rounded-lg transition">
+            View Live Site
+          </Link>
+          <button onClick={logout} className="px-4 py-2 text-sm bg-red-50 text-red-600 hover:bg-red-100 font-bold rounded-lg transition">
+            Logout
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        {/* Card 1: Manage Projects */}
+        <Link href="/admin/projects" className="group block">
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer h-full">
+            <div className="text-4xl mb-4">📂</div>
+            <h2 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition">Manage Projects</h2>
+            <p className="text-gray-500 mt-2">View, Edit, or Delete your existing projects.</p>
+          </div>
+        </Link>
+
+        {/* Card 2: Inbox */}
+        <Link href="/admin/messages" className="group block">
+          <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer h-full">
+            <div className="text-4xl mb-4">📩</div>
+            <h2 className="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition">Inbox</h2>
+            <p className="text-gray-500 mt-2">Check messages from recruiters.</p>
+          </div>
+        </Link>
+
+        {/* 👇 THIS IS THE MISSING PART */}
+        {/* Card 3: Skill Manager */}
+        <div className="col-span-1 md:col-span-2">
+            <SkillManager />
+        </div>
+
+        {/* Card 4: Resume Uploader */}
+        <div className="col-span-1 md:col-span-2">
+            <ResumeUpload />
+        </div>
+
       </div>
     </div>
   );

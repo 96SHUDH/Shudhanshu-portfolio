@@ -30,9 +30,23 @@ export default function AdminMessages() {
     fetchMessages();
   }, []);
 
-  const handleDelete = (id: string) => {
-    setMessages(messages.filter((msg) => msg._id !== id));
-    toast.success("Message dismissed");
+  // ✅ UPDATED: Now deletes from Database + UI
+  const handleDelete = async (id: string) => {
+    // 1. Confirm before deleting
+    if (!confirm("Are you sure you want to delete this message permanently?")) return;
+
+    try {
+      // 2. Call the API (Pass ID in the data body)
+      await axios.delete("/api/contact", { data: { id } });
+
+      // 3. Update UI only if API call succeeds
+      setMessages((prev) => prev.filter((msg) => msg._id !== id));
+      toast.success("Message deleted successfully");
+      
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete message from database");
+    }
   };
 
   return (
@@ -48,12 +62,12 @@ export default function AdminMessages() {
         </div>
 
         {loading ? (
-          <div className="text-center py-20">Loading...</div>
+          <div className="text-center py-20 text-gray-500">Loading messages...</div>
         ) : (
           <div className="space-y-4">
             {messages.length === 0 ? (
                <div className="text-center py-20 bg-white rounded-xl border border-gray-100 shadow-sm">
-                  <p className="text-gray-500">No messages found.</p>
+                  <p className="text-gray-500">No new messages found.</p>
                </div>
             ) : (
                messages.map((msg) => (
@@ -75,10 +89,9 @@ export default function AdminMessages() {
                     {msg.message}
                   </p>
 
-                  {/* ✅ UPGRADED BUTTONS */}
                   <div className="flex flex-wrap gap-3 border-t border-gray-100 pt-4">
                     
-                    {/* OPTION 1: GMAIL BUTTON (Best for Web) */}
+                    {/* REPLY: Gmail */}
                     <a 
                         href={`https://mail.google.com/mail/?view=cm&fs=1&to=${msg.email}&su=Re: Inquiry from Portfolio&body=Hi ${msg.name},%0D%0A%0D%0AThank you for reaching out!%0D%0A%0D%0ARegards,%0D%0AShudhanshu`}
                         target="_blank"
@@ -88,7 +101,7 @@ export default function AdminMessages() {
                         <span>📧</span> Reply with Gmail
                     </a>
 
-                    {/* OPTION 2: DEFAULT MAIL APP */}
+                    {/* REPLY: Default App */}
                     <a 
                         href={`mailto:${msg.email}?subject=Re: Inquiry from Portfolio&body=Hi ${msg.name},`}
                         className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 text-sm font-bold rounded-lg hover:bg-gray-200 transition"
@@ -99,9 +112,9 @@ export default function AdminMessages() {
                     {/* DELETE BUTTON */}
                     <button 
                         onClick={() => handleDelete(msg._id)}
-                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-red-600 text-sm font-bold rounded-lg hover:bg-red-50 transition ml-auto"
+                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-red-600 text-sm font-bold rounded-lg hover:bg-red-50 hover:border-red-200 transition ml-auto"
                     >
-                        <span>🗑️</span>
+                        <span>🗑️</span> Delete
                     </button>
                   </div>
 
